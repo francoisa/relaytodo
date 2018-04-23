@@ -1,0 +1,27 @@
+{
+  "name": "relaytodo",
+  "version": "1.0.0",
+  "description": "Todo app using relay-modern/sqlite3/jwt",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./server.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/francoisa/relaytodo.git"
+  },
+  "author": "francoisa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/francoisa/relaytodo/issues"
+  },
+  "homepage": "https://github.com/francoisa/relaytodo#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "express-jwt": "^5.3.1",
+    "graphql": "^0.13.2",
+    "sqlite3": "^4.0.0"
+  }
+}
