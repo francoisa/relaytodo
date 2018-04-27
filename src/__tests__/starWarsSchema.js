@@ -16,23 +16,14 @@ import {
 } from 'graphql';
 
 import {
-  nodeDefinitions,
-  globalIdField,
-  fromGlobalId
-} from '../node/node.js';
-
-import {
-  connectionFromArray
-} from '../connection/arrayconnection.js';
-
-import {
   connectionArgs,
-  connectionDefinitions
-} from '../connection/connection.js';
-
-import {
-  mutationWithClientMutationId
-} from '../mutation/mutation.js';
+  connectionDefinitions,
+  connectionFromArray,
+  fromGlobalId,
+  globalIdField,
+  mutationWithClientMutationId,
+  nodeDefinitions
+} from 'graphql-relay';
 
 import {
   getFaction,
