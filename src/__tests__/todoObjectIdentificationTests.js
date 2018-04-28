@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { TodoSchema } from './todolistSchema';
+import { TodoSchema } from '../server//todolistSchema';
 import { graphql } from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.

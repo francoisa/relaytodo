@@ -19,7 +19,7 @@ import {
 import {
   getSession,
   getTodo,
-  addTodod,
+  addTodo,
   editTodo
 } from './todolistData';
 
@@ -174,7 +174,7 @@ const queryType = new GraphQLObjectType({
       args: {
         nodeId: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (_, args) => getTodo(args.nodeId),
+        resolve: (_, {nodeId}) => getTodo(nodeId)
     },
     node: nodeField
   })

@@ -2,7 +2,7 @@ var listItems = {
   '1': { id: '1', text: 'mill flour', status: 'open'},
   '2': { id: '2', text: 'buy milk', status: 'working'},
   '3': { id: '3', text: 'do taxes', status: 'blocked'},
-  '4': { id: '4', text: 'clean bathroom', status: 'closed'},
+  '4': { id: '4', text: 'clean bathroom', status: 'closed'}
 };
 
 var user = {
@@ -31,6 +31,7 @@ export function addTodo(text) {
   let id = String(Object.keys(listItems).length+1);
   listItems[id] = {id: id, text: text, status: 'open'};
   user.list.push(id);
+  return listItems[id];
 }
 
 export function editTodo(id, text, status) {
