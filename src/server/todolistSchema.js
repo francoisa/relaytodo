@@ -100,6 +100,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     if (type === 'Todo') {
       return getTodo(id);
     }
+    return null;
   },
   obj => {
     return obj.session ? sessionType : todoType;
@@ -114,7 +115,7 @@ const todoType = new GraphQLObjectType({
     id: globalIdField(),
     text: {
       type: GraphQLString,
-      description: 'The text of the todo item.',
+      description: 'The text of the todo item.'
     },
   })
 });
@@ -140,15 +141,15 @@ const sessionType = new GraphQLObjectType({
     id: globalIdField(),
     email: {
       type: GraphQLString,
-      description: 'email address.',
+      description: 'email address.'
     },
     username: {
       type: GraphQLString,
-      description: 'first and last name.',
+      description: 'first and last name.'
     },
     token: {
       type: GraphQLString,
-      description: 'jwt tokwn.',
+      description: 'jwt tokwn.'
     },
     list: {
       type: todoConnection,

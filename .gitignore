@@ -59,4 +59,16 @@ typings/
 
 # relay compiler generated
 __generated__
->>>>>>> First working version.
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# See https://help.github.com/ignore-files/ for more about ignoring files.
