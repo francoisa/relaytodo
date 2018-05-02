@@ -109,7 +109,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
 
 const todoType = new GraphQLObjectType({
   name: 'Todo',
-  description: 'A user who hjas logged in',
+  description: 'A task',
   interfaces: [ nodeInterface ],
   fields: () => ({
     id: globalIdField(),
@@ -176,6 +176,13 @@ const queryType = new GraphQLObjectType({
         nodeId: { type: new GraphQLNonNull(GraphQLString) }
       },
         resolve: (_, {nodeId}) => getTodo(nodeId)
+    },
+    todo: {
+      type: sessionType,
+      args: {
+        nodeId: { type: new GraphQLNonNull(GraphQLString) }
+      },
+        resolve: (_, {nodeId}) => getSession(nodeId)
     },
     node: nodeField
   })

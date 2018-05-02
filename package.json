@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Todo app using relay-modern/sqlite3/jwt",
   "main": "index.js",
+  "proxy": "http://localhost:8080",
   "options": {
     "mocha": "src/**/__tests__/**/*.js"
   },
@@ -66,7 +67,7 @@
     "chalk": "^2.4.1",
     "connect-history-api-fallback": "^1.5.0",
     "eslint": "^4.19.1",
-    "eslint-config-react-app": "^2.1.0",
+    "eslint-config-react-app": "^3.0.0",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
