@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { StarWarsSchema } from '../server/todoSchema.js';
+import { TodoSchema } from '../server/todolistSchema.js';
 import { graphql } from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
@@ -9,13 +9,13 @@ import { graphql } from 'graphql';
 describe('Todo connections', () => {
   it('fetches the first task of the todolist', async () => {
     const query = `
-      query TodoQuery {
-        rebels {
-          name,
-          ships(first: 1) {
+      query GetSessionQuery {
+        session(nodeId: "1") {
+          username
+          list(first: 1) {
             edges {
               node {
-                name
+                text
               }
             }
           }
@@ -23,33 +23,33 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      rebels: {
-        name: 'Alliance to Restore the Republic',
-        ships: {
+      session: {
+        username: 'francoisa',
+        list: {
           edges: [
             {
               node: {
-                name: 'X-Wing'
+                text: 'mill flour'
               }
             }
           ]
         }
       }
     };
-    const result = await graphql(StarWarsSchema, query);
+    const result = await graphql(TodoSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches the first two tasks of the todo list with a cursor', async () => {
     const query = `
-      query MoreRebelShipsQuery {
-        rebels {
-          name,
-          ships(first: 2) {
+      query MoreTodosQuery {
+        session(nodeId: "1") {
+          username,
+          list(first: 2) {
             edges {
               cursor,
               node {
-                name
+                text
               }
             }
           }
@@ -57,40 +57,40 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      rebels: {
-        name: 'Alliance to Restore the Republic',
-        ships: {
+      session: {
+        username: 'francoisa',
+        list: {
           edges: [
             {
               cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
               node: {
-                name: 'X-Wing'
+                text: 'mill flour'
               }
             },
             {
               cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
               node: {
-                name: 'Y-Wing'
+                text: 'buy milk'
               }
             }
           ]
         }
       }
     };
-    const result = await graphql(StarWarsSchema, query);
+    const result = await graphql(TodoSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches the next three tasks of the todo list with a cursor', async () => {
     const query = `
-      query EndOfRebelShipsQuery {
-        rebels {
-          name,
-          ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
+      query EndOfListQuery {
+        session(nodeId: "1") {
+          username,
+          list(first: 2 after: "YXJyYXljb25uZWN0aW9uOjE=") {
             edges {
               cursor,
               node {
-                name
+                text
               }
             }
           }
@@ -98,46 +98,40 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      rebels: {
-        name: 'Alliance to Restore the Republic',
-        ships: {
+      session: {
+        username: 'francoisa',
+        list: {
           edges: [
             {
               cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
               node: {
-                name: 'A-Wing'
+                text: 'do taxes'
               }
             },
             {
               cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
               node: {
-                name: 'Millenium Falcon'
-              }
-            },
-            {
-              cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-              node: {
-                name: 'Home One'
+                text: 'clean bathroom'
               }
             }
           ]
         }
       }
     };
-    const result = await graphql(StarWarsSchema, query);
+    const result = await graphql(TodoSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches no tasks of the todo list at the end of connection', async () => {
     const query = `
-      query RebelsQuery {
-        rebels {
-          name,
-          ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjQ=") {
+      query SessionQuery {
+        session(nodeId: "1") {
+          username,
+          list(first: 3 after: "YXJyYXljb25uZWN0aW9uOjQ=") {
             edges {
               cursor,
               node {
-                name
+                text
               }
             }
           }
@@ -145,36 +139,36 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      rebels: {
-        name: 'Alliance to Restore the Republic',
-        ships: {
+      session: {
+        username: 'francoisa',
+        list: {
           edges: []
         }
       }
     };
-    const result = await graphql(StarWarsSchema, query);
+    const result = await graphql(TodoSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('identifies the end of the list', async () => {
     const query = `
-      query EndOfRebelShipsQuery {
-        rebels {
-          name,
-          originalShips: ships(first: 2) {
+      query EndOfSessionQuery {
+        session(nodeId: "1") {
+          username,
+          originalTodos: list(first: 2) {
             edges {
               node {
-                name
+                text
               }
             }
             pageInfo {
               hasNextPage
             }
           }
-          moreShips: ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
+          moreTodos: list(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
             edges {
               node {
-                name
+                text
               }
             }
             pageInfo {
@@ -185,18 +179,18 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      rebels: {
-        name: 'Alliance to Restore the Republic',
-        originalShips: {
+      session: {
+        username: 'francoisa',
+        originalTodos: {
           edges: [
             {
               node: {
-                name: 'X-Wing'
+                text: 'mill flour'
               }
             },
             {
               node: {
-                name: 'Y-Wing'
+                text: 'buy milk'
               }
             }
           ],
@@ -204,21 +198,16 @@ describe('Todo connections', () => {
             hasNextPage: true
           }
         },
-        moreShips: {
+        moreTodos: {
           edges: [
             {
               node: {
-                name: 'A-Wing'
+                text: 'do taxes'
               }
             },
             {
               node: {
-                name: 'Millenium Falcon'
-              }
-            },
-            {
-              node: {
-                name: 'Home One'
+                text: 'clean bathroom'
               }
             }
           ],
@@ -228,7 +217,7 @@ describe('Todo connections', () => {
         }
       }
     };
-    const result = await graphql(StarWarsSchema, query);
+    const result = await graphql(TodoSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 });

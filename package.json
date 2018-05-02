@@ -8,6 +8,7 @@
     "mocha": "src/**/__tests__/**/*.js"
   },
   "scripts": {
+    "server": "babel-node server.js",
     "start": "babel-node src/start.js",
     "build": "react-scripts build",
     "test": "babel-node ./node_modules/.bin/_mocha $npm_package_options_mocha",

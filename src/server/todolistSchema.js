@@ -17,6 +17,7 @@ import {
 } from 'graphql-relay';
 
 import {
+  createSession,
   getSession,
   getTodo,
   addTodo,
@@ -162,7 +163,6 @@ const sessionType = new GraphQLObjectType({
     }
   })
 });
-
 /**
  * This is the type that will be the root of our query, and the
  * entry point into our schema.
@@ -177,7 +177,7 @@ const queryType = new GraphQLObjectType({
       },
         resolve: (_, {nodeId}) => getTodo(nodeId)
     },
-    todo: {
+    session: {
       type: sessionType,
       args: {
         nodeId: { type: new GraphQLNonNull(GraphQLString) }
@@ -214,6 +214,34 @@ const addTodoMutation = mutationWithClientMutationId({
 });
 
 /**
+ * This will return a GraphQLFieldConfig for our ship
+ * mutation.
+ */
+const createSessionMutation = mutationWithClientMutationId({
+  name: 'CreateSession',
+  inputFields: {
+    username: {
+      type: new GraphQLNonNull(GraphQLString)
+    },
+    password: {
+      type: new GraphQLNonNull(GraphQLString)
+    }
+  },
+  outputFields: {
+    session: {
+      type: sessionType,
+      resolve: payload => payload
+    }
+  },
+  mutateAndGetPayload: ({ username, password }) => {
+    const newSession = createSession(username, password);
+    return {
+      session
+    };
+  }
+});
+
+/**
  * This is the type that will be the root of our mutations, and the
  * entry point into performing writes in our schema.
  *
@@ -221,7 +249,8 @@ const addTodoMutation = mutationWithClientMutationId({
 const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    addTodo: addTodoMutation
+    addTodo: addTodoMutation,
+    createSession: createSessionMutation
   })
 });
 

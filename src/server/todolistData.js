@@ -23,6 +23,15 @@ export function createSession(username, password) {
     }
 }
 
+export function getSession(id) {
+    if (user.id === id) {
+          return user
+    }
+    else {
+      return {status: 'not found'};
+    }
+}
+
 export function getTodo(id) {
     return listItems[id];
 }

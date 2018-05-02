@@ -1,11 +1,8 @@
 const express = require('express');
 const graphQLHTTP = require('express-graphql');
-const { buildSchema } = require('graphql');
+const schema = require('./src/server/todolistSchema').TodoSchema;
 const jwt = require('express-jwt');
-const schema = require('./todolistSchema').TodoSchema;
-const serve = require('webpack-serve');
 
-const APP_PORT = 3000;
 const GRAPHQL_PORT = 8080;
 
 const handleNonRoot = function (req, res, next) {
@@ -17,7 +14,6 @@ const handleNonRoot = function (req, res, next) {
   }
 }
 
-
 const graphQLServer = express();
 graphQLServer.use('/graphql', graphQLHTTP({
     schema: schema,
@@ -25,11 +21,4 @@ graphQLServer.use('/graphql', graphQLHTTP({
 }));
 
 graphQLServer.listen(GRAPHQL_PORT);
-console.log('App listening on port 4000');
-
-const config = require('./webpack.config.js');
-
-serve({ config }).then((server) => {
-      assert(server);
-  setTimeout(() => server.close(done), 1000);
-});
+console.log('App listening on port ' + GRAPHQL_PORT);
