@@ -80,12 +80,12 @@ describe('Todo update mutations', () => {
   });
 });
 
-describe('Session create mutations', () => {
-  it('create a session', async () => {
+describe('Session creation mutations', () => {
+  it('create a viewer', async () => {
     const mutation = `
       mutation CreateSessionMutation($input: CreateSessionInput!) {
         createSession(input: $input) {
-          session {
+          viewer {
             id
             username
           }
@@ -100,8 +100,8 @@ describe('Session create mutations', () => {
     };
     const expected = {
       createSession: {
-        session: {
-          id: 'U2Vzc2lvbjox',
+        viewer: {
+          id: 'dmlld2VyOjE=',
           username: 'francoisa'
         }
       }

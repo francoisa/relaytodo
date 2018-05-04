@@ -29,7 +29,7 @@ import {
  *   id: ID!
  * }
  *
- * type Session : Node {
+ * type viewer : Node {
  *   id: ID!
  *   name: String
  *   list: TodoConnection
@@ -81,8 +81,10 @@ import {
  * }
  *
  * type Mutation {
- *   session(input: SessionInput): SessionPayload
+ *   createSession(input: SessionInput): SessionPayload
  *   addTodo(input: AddTodoInput!): AddTodoPayload
+ *   editTodo(input: AddTodoInput!): AddTodoPayload
+ *   removeTodo(input: AddTodoInput!): AddTodoPayload
  * }
  */
 
@@ -95,7 +97,7 @@ import {
 const { nodeInterface, nodeField } = nodeDefinitions(
   globalId => {
     const { type, id } = fromGlobalId(globalId);
-    if (type === 'Session') {
+    if (type === 'view') {
       return getSession(id);
     }
     if (type === 'Todo') {
@@ -104,7 +106,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     return null;
   },
   obj => {
-    return obj.session ? sessionType : todoType;
+    return obj.view ? viewerType : todoType;
   }
 );
 
@@ -128,8 +130,8 @@ const todoType = new GraphQLObjectType({
 const { connectionType: todoConnection } =
   connectionDefinitions({ nodeType: todoType });
 
-const sessionType = new GraphQLObjectType({
-  name: 'Session',
+const viewerType = new GraphQLObjectType({
+  name: 'viewer',
   description: 'A logged in user',
   interfaces: [ nodeInterface ],
   fields: () => ({
@@ -150,8 +152,8 @@ const sessionType = new GraphQLObjectType({
       type: todoConnection,
       description: 'The user\'s todo list.',
       args: connectionArgs,
-      resolve: (session, args) => connectionFromArray(
-        session.list.map(getTodo),
+      resolve: (viewer, args) => connectionFromArray(
+        viewer.list.map(getTodo),
         args
       )
     }
@@ -168,8 +170,8 @@ const queryType = new GraphQLObjectType({
       },
         resolve: (_, {nodeId}) => getTodo(nodeId)
     },
-    session: {
-      type: sessionType,
+    viewer: {
+      type: viewerType,
       args: {
         nodeId: { type: new GraphQLNonNull(GraphQLString) }
       },
@@ -222,8 +224,8 @@ const createSessionMutation = mutationWithClientMutationId({
     password: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
-    session: {
-      type: sessionType,
+    viewer: {
+      type: viewerType,
       resolve: payload => payload
     }
   },

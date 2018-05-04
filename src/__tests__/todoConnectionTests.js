@@ -9,8 +9,8 @@ import { graphql } from 'graphql';
 describe('Todo connections', () => {
   it('fetches the first task of the todolist', async () => {
     const query = `
-      query GetSessionQuery {
-        session(nodeId: "1") {
+      query GetListQuery {
+        viewer(nodeId: "1") {
           username
           list(first: 1) {
             edges {
@@ -23,7 +23,7 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      session: {
+      viewer: {
         username: 'francoisa',
         list: {
           edges: [
@@ -43,7 +43,7 @@ describe('Todo connections', () => {
   it('fetches the first two tasks of the todo list with a cursor', async () => {
     const query = `
       query MoreTodosQuery {
-        session(nodeId: "1") {
+        viewer(nodeId: "1") {
           username,
           list(first: 2) {
             edges {
@@ -57,7 +57,7 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      session: {
+      viewer: {
         username: 'francoisa',
         list: {
           edges: [
@@ -84,7 +84,7 @@ describe('Todo connections', () => {
   it('fetches the next three tasks of the todo list with a cursor', async () => {
     const query = `
       query EndOfListQuery {
-        session(nodeId: "1") {
+        viewer(nodeId: "1") {
           username,
           list(first: 2 after: "YXJyYXljb25uZWN0aW9uOjE=") {
             edges {
@@ -98,7 +98,7 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      session: {
+      viewer: {
         username: 'francoisa',
         list: {
           edges: [
@@ -125,7 +125,7 @@ describe('Todo connections', () => {
   it('fetches no tasks of the todo list at the end of connection', async () => {
     const query = `
       query SessionQuery {
-        session(nodeId: "1") {
+        viewer(nodeId: "1") {
           username,
           list(first: 3 after: "YXJyYXljb25uZWN0aW9uOjQ=") {
             edges {
@@ -139,7 +139,7 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      session: {
+      viewer: {
         username: 'francoisa',
         list: {
           edges: []
@@ -153,7 +153,7 @@ describe('Todo connections', () => {
   it('identifies the end of the list', async () => {
     const query = `
       query EndOfSessionQuery {
-        session(nodeId: "1") {
+        viewer(nodeId: "1") {
           username,
           originalTodos: list(first: 2) {
             edges {
@@ -179,7 +179,7 @@ describe('Todo connections', () => {
       }
     `;
     const expected = {
-      session: {
+      viewer: {
         username: 'francoisa',
         originalTodos: {
           edges: [
