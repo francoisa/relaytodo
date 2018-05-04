@@ -45,8 +45,14 @@ export function addTodo(text) {
 
 export function editTodo(id, text, status) {
   if (id in listItems) {
-    listItems[id] = {id: id, text: text, status: status};
+    if (text && text !== null) {
+      listItems[id].text = text;
+    }
+    if (status && status !== null) {
+      listItems[id].status = status;
+    }
   }
+  return listItems[id];
 }
 
 export function deleteTodo(id) {

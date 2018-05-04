@@ -118,22 +118,16 @@ const todoType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The text of the todo item.'
     },
+    status: {
+      type: GraphQLString,
+      description: 'The status of the todo item.'
+    }
   })
 });
 
 const { connectionType: todoConnection } =
   connectionDefinitions({ nodeType: todoType });
 
-/**
- * We define our faction type, which implements the node interface.
- *
- * This implements the following type system shorthand:
- *   type Faction : Node {
- *     id: String!
- *     name: String
- *     ships: ShipConnection
- *   }
- */
 const sessionType = new GraphQLObjectType({
   name: 'Session',
   description: 'A logged in user',
@@ -159,14 +153,11 @@ const sessionType = new GraphQLObjectType({
       resolve: (session, args) => connectionFromArray(
         session.list.map(getTodo),
         args
-      ),
+      )
     }
   })
 });
-/**
- * This is the type that will be the root of our query, and the
- * entry point into our schema.
-*/
+
 const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
@@ -188,44 +179,47 @@ const queryType = new GraphQLObjectType({
   })
 });
 
-/**
- * This will return a GraphQLFieldConfig for our ship
- * mutation.
- */
 const addTodoMutation = mutationWithClientMutationId({
   name: 'AddTodo',
   inputFields: {
-    text: {
-      type: new GraphQLNonNull(GraphQLString)
-    }
+    text: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
     todo: {
       type: todoType,
-      resolve: payload => getTodo(payload.id)
+      resolve: payload => payload
     }
   },
   mutateAndGetPayload: ({ text }) => {
     const newTodo = addTodo(text);
-    return {
-      id: newTodo.id
-    };
+    return newTodo;
   }
 });
 
-/**
- * This will return a GraphQLFieldConfig for our ship
- * mutation.
- */
+const editTodoMutation = mutationWithClientMutationId({
+  name: 'EditTodo',
+  inputFields: {
+    nodeId: { type: new GraphQLNonNull(GraphQLString) },
+    text: { type: GraphQLString },
+    status: { type: GraphQLString }
+  },
+  outputFields: {
+    todo: {
+      type: todoType,
+      resolve: payload => payload
+    }
+  },
+  mutateAndGetPayload: ({ nodeId, text, status }) => {
+    const updatedTodo = editTodo(nodeId, text, status);
+    return updatedTodo;
+  }
+});
+
 const createSessionMutation = mutationWithClientMutationId({
   name: 'CreateSession',
   inputFields: {
-    username: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
-    password: {
-      type: new GraphQLNonNull(GraphQLString)
-    }
+    username: { type: new GraphQLNonNull(GraphQLString) },
+    password: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
     session: {
@@ -235,9 +229,7 @@ const createSessionMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: ({ username, password }) => {
     const newSession = createSession(username, password);
-    return {
-      session
-    };
+    return newSession;
   }
 });
 
@@ -250,6 +242,7 @@ const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
     addTodo: addTodoMutation,
+    editTodo: editTodoMutation,
     createSession: createSessionMutation
   })
 });
