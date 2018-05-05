@@ -13,7 +13,9 @@ var user = {
   list: ['1', '2', '3', '4']
 };
 
-export function createSession(username, password) {
+export function ObjectDao() {}
+
+ObjectDao.prototype.createSession = function(username, password) {
     if (user.username === username &&
         user.password === password) {
           return user
@@ -23,7 +25,7 @@ export function createSession(username, password) {
     }
 }
 
-export function getSession(id) {
+ObjectDao.prototype.getSession = function(id) {
     if (user.id === id) {
           return user
     }
@@ -32,18 +34,18 @@ export function getSession(id) {
     }
 }
 
-export function getTodo(id) {
+ObjectDao.prototype.getTodo = function(id) {
     return listItems[id];
 }
 
-export function addTodo(text) {
+ObjectDao.prototype.addTodo = function(text) {
   let id = String(Object.keys(listItems).length+1);
   listItems[id] = {id: id, text: text, status: 'open'};
   user.list.push(id);
   return listItems[id];
 }
 
-export function editTodo(id, text, status) {
+ObjectDao.prototype.editTodo = function(id, text, status) {
   if (id in listItems) {
     if (text && text !== null) {
       listItems[id].text = text;
@@ -55,7 +57,7 @@ export function editTodo(id, text, status) {
   return listItems[id];
 }
 
-export function deleteTodo(id) {
+ObjectDao.prototype.deleteTodo = function(id) {
   if (id in listItems) {
     delete listItems[id];
     return true;

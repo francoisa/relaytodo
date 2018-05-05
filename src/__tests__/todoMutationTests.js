@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { TodoSchema } from '../server/todolistSchema.js';
-import { getTodo } from '../server/todolistData.js';
+import { setDao, TodoSchema } from '../server/todolistSchema.js';
+import { ObjectDao } from '../server/todolistData.js';
 import { graphql } from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
@@ -35,12 +35,13 @@ describe('Todo add mutations', () => {
         clientMutationId: 'unknown'
       }
     };
-    const result = await graphql(TodoSchema, mutation, null, null, params);
+    const result = await graphql(TodoSchema, mutation, null, new ObjectDao(), params);
     expect(result).to.deep.equal({ data: expected });
   });
 });
 
 describe('Todo update mutations', () => {
+  var dao = new ObjectDao();
   it('update a todo', async () => {
     const mutation = `
       mutation EditTodoQuery($input: EditTodoInput!) {
@@ -71,11 +72,11 @@ describe('Todo update mutations', () => {
         clientMutationId: 'unknown'
       }
     };
-    const result = await graphql(TodoSchema, mutation, null, null, params);
+    const result = await graphql(TodoSchema, mutation, null, dao, params);
     expect(result).to.deep.equal({ data: expected });
   });
   after(() => {
-    var todo = getTodo('1');
+    var todo = dao.getTodo('1');
     todo.text = 'mill flour';
   });
 });
@@ -106,7 +107,7 @@ describe('Session creation mutations', () => {
         }
       }
     };
-    const result = await graphql(TodoSchema, mutation, null, null, params);
+    const result = await graphql(TodoSchema, mutation, null, new ObjectDao(), params);
     expect(result).to.deep.equal({ data: expected });
   });
 });

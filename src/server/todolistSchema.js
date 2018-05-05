@@ -16,14 +16,6 @@ import {
   nodeDefinitions
 } from 'graphql-relay';
 
-import {
-  createSession,
-  getSession,
-  getTodo,
-  addTodo,
-  editTodo
-} from './todolistData';
-
 /**
  * interface Node {
  *   id: ID!
@@ -95,13 +87,13 @@ import {
  * way we resolve an object that implements node to its type.
  */
 const { nodeInterface, nodeField } = nodeDefinitions(
-  globalId => {
+  (globalId, dao) => {
     const { type, id } = fromGlobalId(globalId);
-    if (type === 'view') {
-      return getSession(id);
+    if (type === 'Viewer') {
+      return dao.getSession(id);
     }
     if (type === 'Todo') {
-      return getTodo(id);
+      return dao.getTodo(id);
     }
     return null;
   },
@@ -152,8 +144,8 @@ const viewerType = new GraphQLObjectType({
       type: todoConnection,
       description: 'The user\'s todo list.',
       args: connectionArgs,
-      resolve: (viewer, args) => connectionFromArray(
-        viewer.list.map(getTodo),
+      resolve: (viewer, args, dao) => connectionFromArray(
+        viewer.list.map(dao.getTodo),
         args
       )
     }
@@ -168,14 +160,14 @@ const queryType = new GraphQLObjectType({
       args: {
         nodeId: { type: new GraphQLNonNull(GraphQLString) }
       },
-        resolve: (_, {nodeId}) => getTodo(nodeId)
+        resolve: (_, {nodeId}, dao) => dao.getTodo(nodeId)
     },
     viewer: {
       type: viewerType,
       args: {
         nodeId: { type: new GraphQLNonNull(GraphQLString) }
       },
-        resolve: (_, {nodeId}) => getSession(nodeId)
+        resolve: (_, {nodeId}, dao) => dao.getSession(nodeId)
     },
     node: nodeField
   })
@@ -192,8 +184,8 @@ const addTodoMutation = mutationWithClientMutationId({
       resolve: payload => payload
     }
   },
-  mutateAndGetPayload: ({ text }) => {
-    const newTodo = addTodo(text);
+  mutateAndGetPayload: ({ text }, dao) => {
+    const newTodo = dao.addTodo(text);
     return newTodo;
   }
 });
@@ -211,8 +203,8 @@ const editTodoMutation = mutationWithClientMutationId({
       resolve: payload => payload
     }
   },
-  mutateAndGetPayload: ({ nodeId, text, status }) => {
-    const updatedTodo = editTodo(nodeId, text, status);
+  mutateAndGetPayload: ({ nodeId, text, status }, dao) => {
+    const updatedTodo = dao.editTodo(nodeId, text, status);
     return updatedTodo;
   }
 });
@@ -229,8 +221,8 @@ const createSessionMutation = mutationWithClientMutationId({
       resolve: payload => payload
     }
   },
-  mutateAndGetPayload: ({ username, password }) => {
-    const newSession = createSession(username, password);
+  mutateAndGetPayload: ({ username, password }, dao) => {
+    const newSession = dao.createSession(username, password);
     return newSession;
   }
 });

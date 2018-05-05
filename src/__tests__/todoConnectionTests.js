@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { TodoSchema } from '../server/todolistSchema.js';
+import { setDao, TodoSchema } from '../server/todolistSchema.js';
+import { ObjectDao } from '../server/todolistData.js';
 import { graphql } from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
@@ -36,7 +37,7 @@ describe('Todo connections', () => {
         }
       }
     };
-    const result = await graphql(TodoSchema, query);
+    const result = await graphql(TodoSchema, query, null, new ObjectDao());
     expect(result).to.deep.equal({ data: expected });
   });
 
@@ -77,7 +78,7 @@ describe('Todo connections', () => {
         }
       }
     };
-    const result = await graphql(TodoSchema, query);
+    const result = await graphql(TodoSchema, query, null, new ObjectDao());
     expect(result).to.deep.equal({ data: expected });
   });
 
@@ -118,7 +119,7 @@ describe('Todo connections', () => {
         }
       }
     };
-    const result = await graphql(TodoSchema, query);
+    const result = await graphql(TodoSchema, query, null, new ObjectDao());
     expect(result).to.deep.equal({ data: expected });
   });
 
@@ -146,7 +147,7 @@ describe('Todo connections', () => {
         }
       }
     };
-    const result = await graphql(TodoSchema, query);
+    const result = await graphql(TodoSchema, query, null, new ObjectDao());
     expect(result).to.deep.equal({ data: expected });
   });
 
@@ -217,7 +218,7 @@ describe('Todo connections', () => {
         }
       }
     };
-    const result = await graphql(TodoSchema, query);
+    const result = await graphql(TodoSchema, query, null, new ObjectDao());
     expect(result).to.deep.equal({ data: expected });
   });
 });
