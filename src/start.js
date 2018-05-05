@@ -25,6 +25,8 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
+const ObjectDao =  require('./server/todolistData').ObjectDao;
+
 const {
   choosePort,
   createCompiler,
@@ -60,8 +62,10 @@ const handleNonRoot = function (req, res, next) {
 }
 
 const graphQLServer = express();
+const dao = new ObjectDao();
 graphQLServer.use('/graphql', graphQLHTTP({
     schema: schema,
+    context: dao,
     graphiql: true
 }));
 
