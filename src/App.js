@@ -10,17 +10,18 @@ class App extends Component {
           <header className="App-header">
            <h1 className="App-title">Todo</h1>
           </header>
-         <p className="App-intro">
+         <div className="App-intro">
            <QueryRenderer
              environment={environment}
              query={graphql`
-                       query AppQuery {
-                         viewer (nodeId: "1") {
+                       query AppQuery($nodeId: String!) {
+                         viewer (nodeId: $nodeId) {
                            id
+                           username
                          }
                        }
                     `}
-             variables={{}}
+             variables={{nodeId: "1"}}
              render={({error, props}) => {
               if  (error) {
                 return <div>Error!</div>;
@@ -28,10 +29,10 @@ class App extends Component {
               if (!props) {
                 return <div>Loading...</div>;
               }
-              return <div>User ID: {props.viewer.id}</div>;
+              return <div>username: {props.viewer.username}</div>;
             }}
            />
-         </p>
+         </div>
        </div>
     );
   }

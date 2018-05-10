@@ -37,24 +37,24 @@ type Mutation {
   createSession(input: CreateSessionInput!): CreateSessionPayload
 }
 
-"""An object with an ID"""
+# An object with an ID
 interface Node {
-  """The id of the object."""
+  # The id of the object.
   id: ID!
 }
 
-"""Information about pagination in a connection."""
+# Information about pagination in a connection.
 type PageInfo {
-  """When paginating forwards, are there more items?"""
+  # When paginating forwards, are there more items?
   hasNextPage: Boolean!
 
-  """When paginating backwards, are there more items?"""
+  # When paginating backwards, are there more items?
   hasPreviousPage: Boolean!
 
-  """When paginating backwards, the cursor to continue."""
+  # When paginating backwards, the cursor to continue.
   startCursor: String
 
-  """When paginating forwards, the cursor to continue."""
+  # When paginating forwards, the cursor to continue.
   endCursor: String
 }
 
@@ -62,57 +62,57 @@ type Query {
   todo(nodeId: String!): Todo
   viewer(nodeId: String!): viewer
 
-  """Fetches an object given its ID"""
+  # Fetches an object given its ID
   node(
-    """The ID of an object"""
+    # The ID of an object
     id: ID!
   ): Node
 }
 
-"""A task"""
+# A task
 type Todo implements Node {
-  """The ID of an object"""
+  # The ID of an object
   id: ID!
 
-  """The text of the todo item."""
+  # The text of the todo item.
   text: String
 
-  """The status of the todo item."""
+  # The status of the todo item.
   status: String
 }
 
-"""A connection to a list of items."""
+# A connection to a list of items.
 type TodoConnection {
-  """Information to aid in pagination."""
+  # Information to aid in pagination.
   pageInfo: PageInfo!
 
-  """A list of edges."""
+  # A list of edges.
   edges: [TodoEdge]
 }
 
-"""An edge in a connection."""
+# An edge in a connection.
 type TodoEdge {
-  """The item at the end of the edge"""
+  # The item at the end of the edge
   node: Todo
 
-  """A cursor for use in pagination"""
+  # A cursor for use in pagination
   cursor: String!
 }
 
-"""A logged in user"""
+# A logged in user
 type viewer implements Node {
-  """The ID of an object"""
+  # The ID of an object
   id: ID!
 
-  """email address."""
+  # email address.
   email: String
 
-  """first and last name."""
+  # first and last name.
   username: String
 
-  """jwt tokwn."""
+  # jwt tokwn.
   token: String
 
-  """The user's todo list."""
+  # The user's todo list.
   list(after: String, first: Int, before: String, last: Int): TodoConnection
 }

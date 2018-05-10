@@ -1,3 +1,10 @@
+// @remove-on-eject-begin
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 // @remove-on-eject-end
 'use strict';
 
@@ -14,19 +21,13 @@ process.on('unhandledRejection', err => {
 
 // Ensure environment variables are read.
 require('../config/env');
-const express = require('express');
-const graphQLHTTP = require('express-graphql');
-const { buildSchema } = require('graphql');
-const jwt = require('express-jwt');
-const schema = require('./server/todolistSchema').TodoSchema;
+
 const fs = require('fs');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
+//const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const ObjectDao =  require('./server/todolistData').ObjectDao;
-
 const {
   choosePort,
   createCompiler,
@@ -46,9 +47,12 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
 }
 
-// Tools like Cloud9 rely on this.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+const express = require('express');
+const graphQLHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
+const jwt = require('express-jwt');
+const schema = require('./todolistSchema').TodoSchema;
+const ObjectDao = require('./todolistData').ObjectDao;
 
 const GRAPHQL_PORT = 8080;
 
@@ -71,6 +75,10 @@ graphQLServer.use('/graphql', graphQLHTTP({
 
 graphQLServer.listen(GRAPHQL_PORT);
 console.log('GraphQL server listening on port: ' + GRAPHQL_PORT);
+
+// Tools like Cloud9 rely on this.
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.HOST) {
   console.log(
@@ -114,9 +122,9 @@ choosePort(HOST, DEFAULT_PORT)
       if (err) {
         return console.log(err);
       }
-      if (isInteractive) {
-        clearConsole();
-      }
+//      if (isInteractive) {
+//        clearConsole();
+//      }
       console.log(chalk.cyan('Starting the development server...\n'));
       openBrowser(urls.localUrlForBrowser);
     });
