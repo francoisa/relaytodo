@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import environment from './relay-environment';
 import {graphql, QueryRenderer} from 'react-relay';
+import Todolist from './Todolist';
 
 class App extends Component {
   render() {
@@ -10,14 +11,15 @@ class App extends Component {
           <header className="App-header">
            <h1 className="App-title">Todo</h1>
           </header>
-         <div className="App-intro">
+         <div className="list">
            <QueryRenderer
              environment={environment}
              query={graphql`
                        query AppQuery($nodeId: String!) {
                          viewer (nodeId: $nodeId) {
-                           id
-                           username
+                           id,
+                           username,
+                           ...Todolist_todos
                          }
                        }
                     `}
@@ -29,7 +31,11 @@ class App extends Component {
               if (!props) {
                 return <div>Loading...</div>;
               }
-              return <div>username: {props.viewer.username}</div>;
+              return (
+                <div>
+                  <div>username: {props.viewer.username}</div>
+                  <Todolist todos={props.viewer}/>
+                </div>);
             }}
            />
          </div>
