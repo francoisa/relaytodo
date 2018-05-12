@@ -204,7 +204,8 @@ const editTodoMutation = mutationWithClientMutationId({
     }
   },
   mutateAndGetPayload: ({ nodeId, text, status }, dao) => {
-    const updatedTodo = dao.editTodo(nodeId, text, status);
+    const { id } = fromGlobalId(nodeId);
+    const updatedTodo = dao.editTodo(id, text, status);
     return updatedTodo;
   }
 });

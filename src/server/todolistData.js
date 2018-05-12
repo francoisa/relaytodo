@@ -47,12 +47,20 @@ ObjectDao.prototype.addTodo = function(text) {
 
 ObjectDao.prototype.editTodo = function(id, text, status) {
   if (id in listItems) {
+    console.log('listItems[' + id + '] ' + JSON.stringify(listItems[id]));
     if (text && text !== null) {
       listItems[id].text = text;
     }
-    if (status && status !== null) {
+    else if (status && status !== null) {
       listItems[id].status = status;
     }
+    else {
+      console.log('Nothing to update!')
+    }
+    console.log('listItems[' + id + '] ' + JSON.stringify(listItems[id]));
+  }
+  else {
+    console.log('Id: "' + JSON.stringify(id) + '" not found');
   }
   return listItems[id];
 }
