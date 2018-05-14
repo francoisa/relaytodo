@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {graphql, createFragmentContainer} from 'react-relay';
-import EditTodoMutation from './EditTodoMutation';
+import EditTodoMutation from '../mutations/EditTodoMutation';
 
 class Todo extends Component {
   constructor(props) {
     super(props);
     const {text, status } = this.props.todo;
-    this.state = {text: text, status: status}
+    this.state = {text: text, status: status};
 
     this.submitTextChange = this.submitTextChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -25,7 +25,7 @@ class Todo extends Component {
     this.setState({text: event.target.value});
   }
   handleStatusChange(event) {
-    this.setState({status: event.target.value})
+    this.setState({status: event.target.value});
     EditTodoMutation.commit(
           this.props.relay.environment,
           event.target.value,

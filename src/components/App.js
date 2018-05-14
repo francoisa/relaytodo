@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
-import environment from './relay-environment';
+import '../css/App.css';
+import environment from '../relay-environment';
 import {graphql, QueryRenderer} from 'react-relay';
 import Todolist from './Todolist';
+import AddTodo from './AddTodo';
 
 class App extends Component {
   render() {
@@ -33,7 +34,8 @@ class App extends Component {
               }
               return (
                 <div>
-                  <div>username: {props.viewer.username}</div>
+                  <div className='subheading'>welcome: {props.viewer.username}</div>
+                  <AddTodo environment={environment} viewer={props.viewer}/>
                   <Todolist todos={props.viewer}/>
                 </div>);
             }}

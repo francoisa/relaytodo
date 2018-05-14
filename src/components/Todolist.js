@@ -6,7 +6,7 @@ class Todolist extends Component {
   render() {
     const { list } = this.props.todos;
     return (
-         <ul>
+         <ul className="todolist">
            {list.edges.map(edge =>
              <Todo
                key={edge.node.id}

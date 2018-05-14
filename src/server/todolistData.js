@@ -18,7 +18,7 @@ export function ObjectDao() {}
 ObjectDao.prototype.createSession = function(username, password) {
     if (user.username === username &&
         user.password === password) {
-          return user
+      return user;
     }
     else {
       return {status: 'not found'};
@@ -27,7 +27,7 @@ ObjectDao.prototype.createSession = function(username, password) {
 
 ObjectDao.prototype.getSession = function(id) {
     if (user.id === id) {
-          return user
+      return user;
     }
     else {
       return {status: 'not found'};
@@ -55,7 +55,7 @@ ObjectDao.prototype.editTodo = function(id, text, status) {
       listItems[id].status = status;
     }
     else {
-      console.log('Nothing to update!')
+      console.log('Nothing to update!');
     }
     console.log('listItems[' + id + '] ' + JSON.stringify(listItems[id]));
   }

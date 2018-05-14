@@ -119,8 +119,8 @@ const todoType = new GraphQLObjectType({
   })
 });
 
-const { connectionType: todoConnection } =
-  connectionDefinitions({ nodeType: todoType });
+const { connectionType: todoConnection, edgeType: GraphQLTodoEdge } =
+  connectionDefinitions({ name: 'Todo', nodeType: todoType });
 
 const viewerType = new GraphQLObjectType({
   name: 'viewer',
@@ -176,12 +176,19 @@ const queryType = new GraphQLObjectType({
 const addTodoMutation = mutationWithClientMutationId({
   name: 'AddTodo',
   inputFields: {
+    userId: { type: new GraphQLNonNull(GraphQLString) },
     text: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
-    todo: {
-      type: todoType,
-      resolve: payload => payload
+    todoEdge: {
+      type: GraphQLTodoEdge,
+      resolve: ({localTodoId, userId}) => {
+        const todo = dao.getTodo(localTodoId);
+        return {
+          cursor: cursorForObjectInConnection(dao.getTodos(userId), todo),
+          node: todo
+        };
+      }
     }
   },
   mutateAndGetPayload: ({ text }, dao) => {

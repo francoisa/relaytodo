@@ -21,3 +21,21 @@
 .list {
   text-align: left;
 }
+
+.subheading {
+  padding-left: 50px;
+  padding-top: 10px;
+}
+
+.addform {
+  padding-left: 50px;
+  padding-top: 10px;
+}
+
+.addform input {
+  padding-right: 10px;
+}
+
+ul.todolist  {
+    list-style-type: none
+}
