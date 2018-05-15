@@ -22,7 +22,7 @@ export default createFragmentContainer(
   Todolist,
   graphql`
     fragment Todolist_todos on viewer {
-      list(first: 2147483647) {
+      list(first: 2147483647) @connection(key: "Todolist_list") {
         edges {
           node {
             id,

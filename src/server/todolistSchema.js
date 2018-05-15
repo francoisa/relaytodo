@@ -182,7 +182,7 @@ const addTodoMutation = mutationWithClientMutationId({
   outputFields: {
     todoEdge: {
       type: GraphQLTodoEdge,
-      resolve: ({localTodoId, userId}) => {
+      resolve: ({localTodoId, userId}, dao) => {
         const todo = dao.getTodo(localTodoId);
         return {
           cursor: cursorForObjectInConnection(dao.getTodos(userId), todo),
@@ -191,9 +191,10 @@ const addTodoMutation = mutationWithClientMutationId({
       }
     }
   },
-  mutateAndGetPayload: ({ text }, dao) => {
+  mutateAndGetPayload: ({ text, userId }, dao) => {
     const newTodo = dao.addTodo(text);
-    return newTodo;
+    const {id} = fromGlobalId(userId);
+    return {localTodoId: newTodo.id, userId: id};
   }
 });
 

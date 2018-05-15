@@ -7,7 +7,6 @@ class AddTodo extends Component {
     this.state = {text: ''};
 
     this.addTodo = this.addTodo.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
   }
   handleTextChange(event) {

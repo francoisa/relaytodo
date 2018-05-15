@@ -34,6 +34,15 @@ ObjectDao.prototype.getSession = function(id) {
     }
 }
 
+ObjectDao.prototype.getTodos = function(id) {
+  if (user.id === id) {
+    return listItems;
+  }
+  else {
+    return {status: 'not found'};
+  }
+}
+
 ObjectDao.prototype.getTodo = function(id) {
     return listItems[id];
 }
