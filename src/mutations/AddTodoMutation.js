@@ -10,6 +10,7 @@ const mutation = graphql`
           status
           text
         }
+        __typename
         cursor
       }
     }
@@ -17,11 +18,11 @@ const mutation = graphql`
 `;
 
 function sharedUpdater(store, user, newEdge) {
-  console.log(JSON.stringify(Object.keys(user)));
+  console.log('user: ' + JSON.stringify(Object.keys(user)));
   const viewerProxy = store.get(user.id);
   const conn = ConnectionHandler.getConnection(
     viewerProxy,
-    'Todolist_list',
+    'Todolist_list'
   );
   ConnectionHandler.insertEdgeAfter(conn, newEdge);
 }
@@ -42,8 +43,9 @@ function commit(
       },
       updater: (store) => {
         const payload = store.getRootField('addTodo');
-        console.log(JSON.stringify(Object.keys(payload)));
-        const newEdge = payload.getLinkedRecord('todo');
+        console.log('payload: ' + JSON.stringify(Object.keys(payload)));
+        const newEdge = payload.getLinkedRecord('todoEdge');
+        console.log('newEdge: ' + JSON.stringify(Object.keys(newEdge)));
         sharedUpdater(store, user, newEdge);
       },
       optimisticUpdater: (store) => {

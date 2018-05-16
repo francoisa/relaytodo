@@ -15,12 +15,13 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "node setup && react-scripts start",
     "build": "node setup && react-scripts build",
-    "test": "node setup && react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
     "relay": "relay-compiler --src ./src --schema ./src/schema.graphql --extensions js jsx",
     "schema": "babel-node scripts/updateSchema.js",
-    "eject": "react-scripts eject"
+    "server": "babel-node src/server/server.js",
+    "start": "node setup && react-scripts start",
+    "test": "node setup && react-scripts test --env=jsdom"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

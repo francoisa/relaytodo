@@ -10,6 +10,7 @@ import {
   connectionArgs,
   connectionDefinitions,
   connectionFromArray,
+  cursorForObjectInConnection,
   fromGlobalId,
   globalIdField,
   mutationWithClientMutationId,
@@ -180,10 +181,14 @@ const addTodoMutation = mutationWithClientMutationId({
     text: { type: new GraphQLNonNull(GraphQLString) }
   },
   outputFields: {
+    clientMutationId: {type: GraphQLString},
     todoEdge: {
       type: GraphQLTodoEdge,
-      resolve: ({localTodoId, userId}, dao) => {
+      resolve: ({localTodoId, userId}, args, dao) => {
+        console.log('userId: ' + userId + ' localTodoId: ' + localTodoId);
         const todo = dao.getTodo(localTodoId);
+        console.log('todo: ' + JSON.stringify(todo));
+        console.log('todos: ' + JSON.stringify(dao.getTodos(userId)));
         return {
           cursor: cursorForObjectInConnection(dao.getTodos(userId), todo),
           node: todo
