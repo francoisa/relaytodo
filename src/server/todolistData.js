@@ -35,12 +35,13 @@ ObjectDao.prototype.getSession = function(id) {
 }
 
 ObjectDao.prototype.getTodos = function(id) {
+  let itemArray = [];
   if (user.id === id) {
-    return listItems;
+    for (var i in listItems) {
+      itemArray.push(listItems[i]);
+    }
   }
-  else {
-    return {status: 'not found'};
-  }
+  return itemArray;
 }
 
 ObjectDao.prototype.getTodo = function(id) {

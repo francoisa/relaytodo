@@ -31,10 +31,12 @@ var babel = require("babel-core");
 //import * as babel from 'babel-core';
 let options = {};
 
-babel.transformFile("./src/server/todolistSchema.js", options, function(err, result) {
-  let schema = path.resolve('./node_modules/react-scripts/scripts/todolistSchema.js');
-  fs.writeFileSync(schema, result.code, 'utf8');
-});
+babel.transformFile("./src/server/todolistSchema.js", options,
+  function(err, result) {
+    let schema = path.resolve('./node_modules/react-scripts/scripts/todolistSchema.js');
+    fs.writeFileSync(schema, result.code, 'utf8');
+  }
+);
 
 babel.transformFile("./src/server/todolistData.js", options, function(err, result) {
   let data = path.resolve('./node_modules/react-scripts/scripts/todolistData.js');

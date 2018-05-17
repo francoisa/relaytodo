@@ -6,23 +6,45 @@ class Todo extends Component {
   constructor(props) {
     super(props);
     const {text, status } = this.props.todo;
-    this.state = {text: text, status: status};
+    this.state = {text: text, status: status, orig: text};
 
     this.submitTextChange = this.submitTextChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+  handleDelete(event) {
+    
   }
   handleTextChange(event) {
     this.setState({text: event.target.value});
-    EditTodoMutation.commit(
-          this.props.relay.environment,
-          null,
-          event.target.value,
-          this.props.todo,
-        );
+  }
+  handleKeyPress(event) {
+    if (event.charCode === 13) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.state.orig !== this.state.text) {
+        EditTodoMutation.commit(
+              this.props.relay.environment,
+              null,
+              this.state.text,
+              this.props.todo,
+            );
+        this.setState({orig: this.state.text});
+      }
+    }
   }
   submitTextChange(event) {
-    this.setState({text: event.target.value});
+    if (this.state.orig !== event.target.value) {
+      EditTodoMutation.commit(
+            this.props.relay.environment,
+            null,
+            event.target.value,
+            this.props.todo,
+          );
+      this.setState({orig: event.target.value});
+    }
   }
   handleStatusChange(event) {
     this.setState({status: event.target.value});
@@ -46,7 +68,9 @@ class Todo extends Component {
            <input type="text" name="text" value={text}
              onChange={this.handleTextChange}
              onBlur={this.submitTextChange}
+             onKeyPress={this.handleKeyPress}
            />
+           <button onClick={this.handleDelete}>X</button>
       </li>
     );
   }

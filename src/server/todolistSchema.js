@@ -203,6 +203,24 @@ const addTodoMutation = mutationWithClientMutationId({
   }
 });
 
+const deleteTodoMutation = mutationWithClientMutationId({
+  name: 'DeleteTodo',
+  inputFields: {
+    nodeId: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  outputFields: {
+    todo: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: payload => payload
+    }
+  },
+  mutateAndGetPayload: ({ nodeId }, dao) => {
+    const { id } = fromGlobalId(nodeId);
+    const updatedTodo = dao.deleteTodo(id);
+    return nodeId;
+  }
+});
+
 const editTodoMutation = mutationWithClientMutationId({
   name: 'EditTodo',
   inputFields: {
@@ -250,6 +268,7 @@ const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
     addTodo: addTodoMutation,
+    deleteTodo: deleteTodoMutation,
     editTodo: editTodoMutation,
     createSession: createSessionMutation
   })
