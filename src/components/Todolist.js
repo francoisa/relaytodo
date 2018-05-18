@@ -11,6 +11,7 @@ class Todolist extends Component {
              <Todo
                key={edge.node.id}
                todo={edge.node}
+               viewer={this.props.todos}
              />
            )}
          </ul>

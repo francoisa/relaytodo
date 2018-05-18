@@ -5,8 +5,8 @@ input AddTodoInput {
 }
 
 type AddTodoPayload {
-  todoEdge: TodoEdge
   clientMutationId: String
+  todoEdge: TodoEdge
 }
 
 input CreateSessionInput {
@@ -17,6 +17,16 @@ input CreateSessionInput {
 
 type CreateSessionPayload {
   viewer: viewer
+  clientMutationId: String
+}
+
+input DeleteTodoInput {
+  nodeId: ID!
+  clientMutationId: String
+}
+
+type DeleteTodoPayload {
+  deletedId: ID
   clientMutationId: String
 }
 
@@ -34,6 +44,7 @@ type EditTodoPayload {
 
 type Mutation {
   addTodo(input: AddTodoInput!): AddTodoPayload
+  deleteTodo(input: DeleteTodoInput!): DeleteTodoPayload
   editTodo(input: EditTodoInput!): EditTodoPayload
   createSession(input: CreateSessionInput!): CreateSessionPayload
 }

@@ -206,18 +206,18 @@ const addTodoMutation = mutationWithClientMutationId({
 const deleteTodoMutation = mutationWithClientMutationId({
   name: 'DeleteTodo',
   inputFields: {
-    nodeId: { type: new GraphQLNonNull(GraphQLString) }
+    nodeId: { type: new GraphQLNonNull(GraphQLID) }
   },
   outputFields: {
-    todo: {
-      type: new GraphQLNonNull(GraphQLString),
-      resolve: payload => payload
+    deletedId: {
+      type: GraphQLID,
+      resolve: ({nodeId}) => nodeId
     }
   },
   mutateAndGetPayload: ({ nodeId }, dao) => {
     const { id } = fromGlobalId(nodeId);
-    const updatedTodo = dao.deleteTodo(id);
-    return nodeId;
+    dao.deleteTodo(id);
+    return { nodeId };
   }
 });
 

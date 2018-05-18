@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {graphql, createFragmentContainer} from 'react-relay';
 import EditTodoMutation from '../mutations/EditTodoMutation';
+import DeleteTodoMutation from '../mutations/DeleteTodoMutation';
 
 class Todo extends Component {
   constructor(props) {
@@ -15,7 +16,11 @@ class Todo extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   handleDelete(event) {
-    
+    DeleteTodoMutation.commit(
+      this.props.relay.environment,
+      this.props.todo,
+      this.props.viewer
+    );
   }
   handleTextChange(event) {
     this.setState({text: event.target.value});
