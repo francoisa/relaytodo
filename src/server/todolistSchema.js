@@ -90,7 +90,7 @@ import {
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId, dao) => {
     const { type, id } = fromGlobalId(globalId);
-    if (type === 'Viewer') {
+    if (type === 'viewer') {
       return dao.getSession(id);
     }
     if (type === 'Todo') {
@@ -99,7 +99,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     return null;
   },
   obj => {
-    return obj.view ? viewerType : todoType;
+    return obj.list ? viewerType : todoType;
   }
 );
 

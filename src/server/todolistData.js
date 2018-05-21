@@ -8,6 +8,7 @@ var listItems = {
 var user = {
   id: '1',
   name: 'Andre Francois',
+  email: 'afrancois1@bloomerg.net',
   username: 'francoisa',
   password: 'password',
   list: ['1', '2', '3', '4']
@@ -27,7 +28,12 @@ ObjectDao.prototype.createSession = function(username, password) {
 
 ObjectDao.prototype.getSession = function(id) {
     if (user.id === id) {
-      return user;
+      let session = {id: id,
+                      username: user.username,
+                      email: user.email,
+                      token: 'token',
+                      list: user.list};
+      return session;
     }
     else {
       return {status: 'not found'};

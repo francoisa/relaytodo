@@ -36,7 +36,7 @@ class App extends Component {
                 <div>
                   <div className='subheading'>welcome: {props.viewer.username}</div>
                   <AddTodo environment={environment} viewer={props.viewer}/>
-                  <Todolist todos={props.viewer}/>
+                  <Todolist todos={props.viewer} userId={props.viewer.id}/>
                 </div>);
             }}
            />
