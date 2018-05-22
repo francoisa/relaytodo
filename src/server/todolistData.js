@@ -83,10 +83,12 @@ ObjectDao.prototype.editTodo = function(id, text, status) {
 
 ObjectDao.prototype.deleteTodo = function(id) {
   if (id in listItems) {
+    console.log('deleting todo item with Id: ' + JSON.stringify(id));
     delete listItems[id];
     return true;
   }
   else {
+    console.log('todo item with Id: ' + JSON.stringify(id) + ' not found');
     return false;
   }
 }

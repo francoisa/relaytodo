@@ -19,7 +19,7 @@ class Todo extends Component {
     DeleteTodoMutation.commit(
       this.props.relay.environment,
       this.props.todo,
-      this.props.viewer
+      this.props.userId
     );
   }
   handleTextChange(event) {
