@@ -31,6 +31,20 @@ var babel = require("babel-core");
 //import * as babel from 'babel-core';
 let options = {};
 
+const serverDir = './src/server';
+const destDir = './node_modules/react-scripts/scripts/';
+fs.readdir(serverDir, function(err, files) {
+  files.forEach(function(file) {
+    babel.transformFile(serverDir + '/' + file, options,
+      function(err, result) {
+        let schema = path.resolve(destDir + '/' + file);
+        fs.writeFileSync(schema, result.code, 'utf8');
+      }
+    );
+  })
+});
+
+/*
 babel.transformFile("./src/server/todolistSchema.js", options,
   function(err, result) {
     let schema = path.resolve('./node_modules/react-scripts/scripts/todolistSchema.js');
@@ -42,7 +56,7 @@ babel.transformFile("./src/server/todolistData.js", options, function(err, resul
   let data = path.resolve('./node_modules/react-scripts/scripts/todolistData.js');
   fs.writeFileSync(data, result.code, 'utf8');
 });
-
+*/
 /*
 const spawn = require('react-dev-utils/crossSpawn');
 let result = spawn.sync(

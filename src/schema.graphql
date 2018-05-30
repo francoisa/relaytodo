@@ -31,6 +31,7 @@ type DeleteTodoPayload {
 }
 
 input EditTodoInput {
+  userId: String!
   nodeId: String!
   text: String
   status: String
@@ -38,8 +39,8 @@ input EditTodoInput {
 }
 
 type EditTodoPayload {
-  todo: Todo
   clientMutationId: String
+  todoEdge: TodoEdge
 }
 
 type Mutation {

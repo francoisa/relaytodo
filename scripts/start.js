@@ -52,7 +52,6 @@ const graphQLHTTP = require('express-graphql');
 const { buildSchema } = require('graphql');
 const jwt = require('express-jwt');
 const schema = require('./todolistSchema').TodoSchema;
-const ObjectDao = require('./todolistData').ObjectDao;
 
 const GRAPHQL_PORT = 8080;
 
@@ -66,6 +65,7 @@ const handleNonRoot = function (req, res, next) {
 }
 
 const graphQLServer = express();
+const ObjectDao = require('./todolistObjectDao').ObjectDao;
 const dao = new ObjectDao();
 graphQLServer.use('/graphql', graphQLHTTP({
     schema: schema,

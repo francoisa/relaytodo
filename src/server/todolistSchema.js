@@ -188,7 +188,6 @@ const addTodoMutation = mutationWithClientMutationId({
         console.log('userId: ' + userId + ' localTodoId: ' + localTodoId);
         const todo = dao.getTodo(localTodoId);
         console.log('todo: ' + JSON.stringify(todo));
-        console.log('todos: ' + JSON.stringify(dao.getTodos(userId)));
         return {
           cursor: cursorForObjectInConnection(dao.getTodos(userId), todo),
           node: todo
@@ -224,20 +223,28 @@ const deleteTodoMutation = mutationWithClientMutationId({
 const editTodoMutation = mutationWithClientMutationId({
   name: 'EditTodo',
   inputFields: {
+    userId: { type: new GraphQLNonNull(GraphQLString) },
     nodeId: { type: new GraphQLNonNull(GraphQLString) },
     text: { type: GraphQLString },
     status: { type: GraphQLString }
   },
   outputFields: {
-    todo: {
-      type: todoType,
-      resolve: payload => payload
+    clientMutationId: {type: GraphQLString},
+    todoEdge: {
+      type: GraphQLTodoEdge,
+      resolve: ({todo, userId}, args, dao) => {
+      return {
+          cursor: cursorForObjectInConnection(dao.getTodos(userId), todo),
+          node: todo
+        };
+      }
     }
   },
-  mutateAndGetPayload: ({ nodeId, text, status }, dao) => {
+  mutateAndGetPayload: ({ userId, nodeId, text, status }, dao) => {
     const { id } = fromGlobalId(nodeId);
     const updatedTodo = dao.editTodo(id, text, status);
-    return updatedTodo;
+    const userLocalId = fromGlobalId(userId);
+    return {userId: userLocalId.id, todo: updatedTodo};
   }
 });
 

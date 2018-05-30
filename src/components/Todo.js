@@ -35,6 +35,7 @@ class Todo extends Component {
               null,
               this.state.text,
               this.props.todo,
+              this.props.userId
             );
         this.setState({orig: this.state.text});
       }
@@ -47,6 +48,7 @@ class Todo extends Component {
             null,
             event.target.value,
             this.props.todo,
+            this.props.userId
           );
       this.setState({orig: event.target.value});
     }

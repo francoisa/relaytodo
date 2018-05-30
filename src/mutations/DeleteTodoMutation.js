@@ -36,7 +36,8 @@ function commit(
       },
       updater: (store) => {
         const payload = store.getRootField('deleteTodo');
-        sharedUpdater(store, userId, payload.getValue('deletedId'));      }
+        sharedUpdater(store, userId, payload.getValue('deletedId'));
+      }
     }
   );
 }
